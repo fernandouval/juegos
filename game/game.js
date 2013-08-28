@@ -73,11 +73,13 @@ function createBoy(num)
 		return parseInt(goal.innerHTML,10);
 	};*/
 	document.body.appendChild(newBoy);
-	Droppables.add("boyImg"+num,
-		{
+	Droppables.add("boyImg"+num,{
 		accept:"card",onDrop:addScore
-	}
-	)
+            });
+        Droppables.add("boyImg"+num,{
+		accept:"cardhold",onDrop:rmvScore
+            }
+	);  
 };
 
 function resetGame()
@@ -129,6 +131,7 @@ function createCard(id,valor,color,hold)
 	cards.appendChild(newCard);
 };
 
-function rmvScore(){
-    alert('Remover: ');
+function rmvScore(rmvscore){
+    rmvscore.parentNode.removeChild(rmvscore);
+    //alert('Remover: '+rmvscore.id);
 }
