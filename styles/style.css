@@ -79,7 +79,7 @@ img, object, embed, video {
 }
 }
 
-#boyImg {
+/*#boyImg {
 	color:#000;
 	background-color:none;
 	position: absolute;
@@ -87,4 +87,14 @@ img, object, embed, video {
 	top:30%;
 	width:15%;
 	height:auto;
+}*/
+.card {
+    border: 2px solid black;
+    float: left;
+    margin: 1%;
+    padding: 2%;
+}
+#cards{
+    width: 100%;
+    float: left;
 }

@@ -3,8 +3,8 @@ var stage;
 function createGame()
 	{
 	createCards();
-	createBoy();
-	resetGame()
+	createBoy(1);
+	resetGame();
 };
 function createCards()
 	{
@@ -30,6 +30,9 @@ function createCards()
 		"value":1,"color":"#dc3695"
 	};
 	var highest=100;
+        var newCards=document.createElement("DIV");
+	newCards.id="cards";
+        document.body.appendChild(newCards);
 	for(var i=0;
 	i<card.length;
 	i++)
@@ -49,17 +52,17 @@ function resetGame()
 	{
 	var reset=document.getElementById ("scoreDiv");
 	reset.innerHTML=0;
-	var goal=document.getElementById("maxValueDiv");
-	goal.innerHTML=parseInt(200*Math.random()+1,10);
-	stage=1
+	stage=1;
 };
 function addScore(score)
 	{
-	var newBoy=document.getElementById("boy1");
+	//var newBoy=document.getElementById(score.id);
 	var reset=document.getElementById("scoreDiv");
+        alert('Valor '+reset.innerHTML);
+        alert('Score: '+score.value);
 	var result=parseInt(reset.innerHTML,10)+score.value;
 	reset.innerHTML=result;
-	if(result==newBoy.maxValue())
+/*	if(result==newBoy.maxValue())
 		{
 		alert("Ganaste!!!");
 		resetGame()
@@ -71,36 +74,31 @@ function addScore(score)
 			alert("Perdiste!!!");
 			resetGame()
 		}
-	}
+	}*/
 };
-function createBoy()
+function createBoy(num)
 	{
 	var newBoy=document.createElement("DIV");
-	newBoy.id="boy1";
+	newBoy.id="boy"+num;
 	var boyImg=document.createElement("IMG");
-	boyImg.id="boyImg";
-	boyImg.src="images/child1.png";
+	boyImg.id="boyImg"+num;
+	boyImg.src="images/child"+num+".png";
 	newBoy.appendChild(boyImg);
 	var cardSum=document.createElement("DIV");
 	cardSum.id="scoreDiv";
 	cardSum.innerHTML=0;
-	cardSum.style.position="absolute";
-	cardSum.style.left="300px";
-	cardSum.style.top="20px";
 	newBoy.appendChild(cardSum);
 	var goal=document.createElement("DIV");
 	goal.id="maxValueDiv";
-	goal.style.position="absolute";
-	goal.style.left="300px";
-	goal.style.top="60px";
+        goal.innerHTML="20";
 	newBoy.appendChild(goal);
 	newBoy.maxValue=function()
 		{
 		var goal=document.getElementById("maxValueDiv");
-		return parseInt(goal.innerHTML,10)
+		return parseInt(goal.innerHTML,10);
 	};
 	document.body.appendChild(newBoy);
-	Droppables.add("boyImg",
+	Droppables.add("boyImg"+num,
 		{
 		accept:"card",onDrop:addScore
 	}
@@ -112,13 +110,9 @@ function createCard(red,green,blue,yellow,pink)
 	newCard.id="card"+blue;
 	newCard.className="card";
 	newCard.style.backgroundColor=pink;
-	newCard.style.position="absolute";
-	newCard.style.left=red+"px";
-	newCard.style.top=green+"px";
-	newCard.style.width="60px";
-	newCard.style.height="80px";
 	var _0x7cf8x18=document.createTextNode(yellow);
 	newCard.appendChild(_0x7cf8x18);
 	newCard.value=yellow;
-	document.body.appendChild(newCard)
+        var cards=document.getElementById("cards");
+	cards.appendChild(newCard);
 };
