@@ -56,19 +56,22 @@ function createBoy(num)
 	boyImg.id="boyImg"+num;
 	boyImg.src="images/child"+num+".png";
 	newBoy.appendChild(boyImg);
+        var goal=document.createElement("DIV");
+	goal.id="maxValueDiv";
+	newBoy.appendChild(goal);
+        var goalIn=document.createElement("DIV");
+	goalIn.id="maxValue";
+        goalIn.innerHTML="20";
+	goal.appendChild(goalIn);
 	var cardSum=document.createElement("DIV");
 	cardSum.id="cardshold";
 	cardSum.value=0;
 	newBoy.appendChild(cardSum);
-	var goal=document.createElement("DIV");
-	goal.id="maxValueDiv";
-        goal.innerHTML="20";
-	newBoy.appendChild(goal);
-	newBoy.maxValue=function()
+/*	newBoy.maxValue=function()
 		{
 		var goal=document.getElementById("maxValueDiv");
 		return parseInt(goal.innerHTML,10);
-	};
+	};*/
 	document.body.appendChild(newBoy);
 	Droppables.add("boyImg"+num,
 		{
