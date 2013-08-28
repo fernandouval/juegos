@@ -94,6 +94,12 @@ img, object, embed, video {
     margin: 1%;
     padding: 2%;
 }
+.cardhold {
+    border: 2px solid black;
+    float: left;
+    margin: 1%;
+    padding: 2%;
+}
 #cards{
     width: 100%;
     float: left;

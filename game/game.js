@@ -29,7 +29,6 @@ function createCards()
 		{
 		"value":1,"color":"#dc3695"
 	};
-	var highest=100;
         var newCards=document.createElement("DIV");
 	newCards.id="cards";
         document.body.appendChild(newCards);
@@ -37,7 +36,7 @@ function createCards()
 	i<card.length;
 	i++)
 		{
-		createCard(i*100+highest,100,i,card[i].value,card[i].color);
+		createCard(i,card[i].value,card[i].color,'');
 		new Draggable("card"+i,
 			{
 			scroll:window,zindex:10,handle:"card",revert:function(score)
@@ -48,34 +47,7 @@ function createCards()
 		)
 	}
 };
-function resetGame()
-	{
-	var reset=document.getElementById ("scoreDiv");
-	reset.innerHTML=0;
-	stage=1;
-};
-function addScore(score)
-	{
-	//var newBoy=document.getElementById(score.id);
-	var reset=document.getElementById("scoreDiv");
-        alert('Valor '+reset.innerHTML);
-        alert('Score: '+score.value);
-	var result=parseInt(reset.innerHTML,10)+score.value;
-	reset.innerHTML=result;
-/*	if(result==newBoy.maxValue())
-		{
-		alert("Ganaste!!!");
-		resetGame()
-	}
-	else
-		{
-		if(result>newBoy.maxValue())
-			{
-			alert("Perdiste!!!");
-			resetGame()
-		}
-	}*/
-};
+
 function createBoy(num)
 	{
 	var newBoy=document.createElement("DIV");
@@ -85,8 +57,8 @@ function createBoy(num)
 	boyImg.src="images/child"+num+".png";
 	newBoy.appendChild(boyImg);
 	var cardSum=document.createElement("DIV");
-	cardSum.id="scoreDiv";
-	cardSum.innerHTML=0;
+	cardSum.id="cardshold";
+	cardSum.value=0;
 	newBoy.appendChild(cardSum);
 	var goal=document.createElement("DIV");
 	goal.id="maxValueDiv";
@@ -104,15 +76,56 @@ function createBoy(num)
 	}
 	)
 };
-function createCard(red,green,blue,yellow,pink)
+
+function resetGame()
+	{
+	var reset=document.getElementById ("cardshold");
+	reset.innerHTML='';
+	stage=1;
+};
+function addScore(score)
+	{
+	//var newBoy=document.getElementById(score.id);
+	/*var reset=document.getElementById("cardshold");
+	var result=parseInt(reset.value,10)+score.value;
+	reset.value=result;*/
+        createCard(score.id,score.value,score.style.backgroundColor,'hold');
+        new Draggable("cardhold"+score.id,
+                {
+                scroll:window,zindex:10,handle:"cardhold",revert:function(rmvscore)
+                        {
+                        return 1
+                }
+        }
+        )
+/*	if(result==newBoy.maxValue())
+		{
+		alert("Ganaste!!!");
+		resetGame()
+	}
+	else
+		{
+		if(result>newBoy.maxValue())
+			{
+			alert("Perdiste!!!");
+			resetGame()
+		}
+	}*/
+};
+
+function createCard(id,valor,color,hold)
 	{
 	var newCard=document.createElement("DIV");
-	newCard.id="card"+blue;
-	newCard.className="card";
-	newCard.style.backgroundColor=pink;
-	var _0x7cf8x18=document.createTextNode(yellow);
+	newCard.id="card"+hold+id;
+	newCard.className="card"+hold;
+	newCard.style.backgroundColor=color;
+	var _0x7cf8x18=document.createTextNode(valor);
 	newCard.appendChild(_0x7cf8x18);
-	newCard.value=yellow;
-        var cards=document.getElementById("cards");
+	newCard.value=valor;
+        var cards=document.getElementById("cards"+hold);
 	cards.appendChild(newCard);
 };
+
+function rmvScore(){
+    alert('Remover: ');
+}
