@@ -3,8 +3,7 @@ var stage;
 function createGame()
 	{
 	createCards();
-	createBoy(1);
-	resetGame();
+	resetGame(1);
 };
 function createCards()
 	{
@@ -32,106 +31,111 @@ function createCards()
         var newCards=document.createElement("DIV");
 	newCards.id="cards";
         document.body.appendChild(newCards);
-	for(var i=0;
-	i<card.length;
-	i++)
-		{
+	for(var i=0;i<card.length;i++){
 		createCard(i,card[i].value,card[i].color,'');
-		new Draggable("card"+i,
-			{
+		new Draggable("card"+i,{
 			scroll:window,zindex:10,handle:"card",revert:function(score)
-				{
-				return 1
-			}
-		}
-		)
+                            { return 1; }
+		});
 	}
 };
 
-function createBoy(num)
-	{
-	var newBoy=document.createElement("DIV");
-	newBoy.id="boy"+num;
-	var boyImg=document.createElement("IMG");
-	boyImg.id="boyImg"+num;
-	boyImg.src="images/child"+num+".png";
-	newBoy.appendChild(boyImg);
-        var goal=document.createElement("DIV");
-	goal.id="maxValueDiv";
-	newBoy.appendChild(goal);
-        var goalIn=document.createElement("DIV");
-	goalIn.id="maxValue";
-        goalIn.innerHTML="20";
-	goal.appendChild(goalIn);
-	var cardSum=document.createElement("DIV");
-	cardSum.id="cardshold";
-	cardSum.value=0;
-	newBoy.appendChild(cardSum);
-/*	newBoy.maxValue=function()
-		{
-		var goal=document.getElementById("maxValueDiv");
-		return parseInt(goal.innerHTML,10);
-	};*/
-	document.body.appendChild(newBoy);
-	Droppables.add("boyImg"+num,{
-		accept:"card",onDrop:addScore
-            });
-        Droppables.add("boyImg"+num,{
-		accept:"cardhold",onDrop:rmvScore
-            }
-	);  
-};
-
-function resetGame()
-	{
-	var reset=document.getElementById ("cardshold");
-	reset.innerHTML='';
-	stage=1;
-};
-function addScore(score)
-	{
-	//var newBoy=document.getElementById(score.id);
-	/*var reset=document.getElementById("cardshold");
-	var result=parseInt(reset.value,10)+score.value;
-	reset.value=result;*/
-        createCard(score.id,score.value,score.style.backgroundColor,'hold');
-        new Draggable("cardhold"+score.id,
-                {
-                scroll:window,zindex:10,handle:"cardhold",revert:function(rmvscore)
-                        {
-                        return 1
-                }
+function createChild(num){
+    var newChild=document.createElement("DIV");
+    newChild.id="child"+num;
+    var childImg=document.createElement("IMG");
+    childImg.id="childImg"+num;
+    childImg.src="images/child"+num+".png";
+    newChild.appendChild(childImg);
+    var nextDiv=document.createElement("DIV");
+    nextDiv.id='div-next'+num;
+    nextDiv.className='div-next';
+    newChild.appendChild(nextDiv);
+    var next=document.createElement("A");
+    next.id='next'+num;
+    next.className='next';
+    next.innerHTML='Siguiente';
+    next.onclick=function() { resetGame(num+1);};
+    nextDiv.appendChild(next);
+    var goal=document.createElement("DIV");
+    goal.id="maxValueDiv";
+    newChild.appendChild(goal);
+    var goalIn=document.createElement("DIV");
+    goalIn.id="maxValue";
+    goalIn.innerHTML="20";
+    goal.appendChild(goalIn);
+    var cardSum=document.createElement("DIV");
+    cardSum.id="cardshold";
+    cardSum.value=0;
+    newChild.appendChild(cardSum);
+    document.body.appendChild(newChild);
+    Droppables.add("childImg"+num,{
+            accept:"card",onDrop:addScore
+        });
+    Droppables.add("childImg"+num,{
+            accept:"cardhold",onDrop:rmvScore
         }
-        )
-/*	if(result==newBoy.maxValue())
-		{
-		alert("Ganaste!!!");
-		resetGame()
-	}
-	else
-		{
-		if(result>newBoy.maxValue())
-			{
-			alert("Perdiste!!!");
-			resetGame()
-		}
-	}*/
+    );  
 };
 
-function createCard(id,valor,color,hold)
-	{
-	var newCard=document.createElement("DIV");
-	newCard.id="card"+hold+id;
-	newCard.className="card"+hold;
-	newCard.style.backgroundColor=color;
-	var _0x7cf8x18=document.createTextNode(valor);
-	newCard.appendChild(_0x7cf8x18);
-	newCard.value=valor;
-        var cards=document.getElementById("cards"+hold);
-	cards.appendChild(newCard);
+function resetGame(stage){
+    //Booramos el anterior salvo que sea el primero
+    if (stage !== 1){
+        var prevChild=document.getElementById("child"+Math.abs(stage - 1));
+        prevChild.parentNode.removeChild(prevChild);
+    }
+    createChild(stage);
+    //Imprimir valores antes de resetear el count
+    /*METRICAS*/
+    counter=[];
+    time=new Date();
+    tiempo=time.toLocaleTimeString();
+    counter[0]=tiempo+"-J1-"+stage;
+};
+function addScore(score){
+        var cardid=createCard(score.id,score.value,score.style.backgroundColor,'hold');
+        new Draggable(cardid,{
+                scroll:window,zindex:10,handle:"cardhold",revert:function(rmvscore)
+                    { return 1; }
+        });
+        var pos=counter.length;
+        var diff = Math.abs(new Date() - time);
+        //Damos el tiempo con respecto al movimiento anterior:
+        time=new Date();
+        counter[pos+1]=diff+"-add-"+cardid;
+        //alert(counter.join('\n'));
+};
+
+function createCard(id,valor,color,hold){
+    var newCard=document.createElement("DIV");
+    //Buscamos si existe la carta en el hold para no repetir ids
+    var prevCards=document.getElementById("card"+hold+id);
+    if (prevCards !== null){
+        var i=0;
+        while (prevCards !== null){
+            i++;
+            prevCards=document.getElementById("card"+hold+id+'_'+i);
+        }
+        newCard.id="card"+hold+id+'_'+i;
+    }
+    else
+        newCard.id="card"+hold+id;
+    newCard.className="card"+hold;
+    newCard.style.backgroundColor=color;
+    var _0x7cf8x18=document.createTextNode(valor);
+    newCard.appendChild(_0x7cf8x18);
+    newCard.value=valor;
+    var cards=document.getElementById("cards"+hold);
+    cards.appendChild(newCard);
+    return newCard.id;
 };
 
 function rmvScore(rmvscore){
     rmvscore.parentNode.removeChild(rmvscore);
-    //alert('Remover: '+rmvscore.id);
+    var pos=counter.length;
+    var diff = Math.abs(new Date() - time);
+    //Damos el tiempo con respecto al movimiento anterior:
+    time=new Date();
+    counter[pos+1]=diff+"-rmv-"+rmvscore.id;
+    //alert(counter.join('\n'));
 }
