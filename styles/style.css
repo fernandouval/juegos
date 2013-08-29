@@ -120,3 +120,13 @@ img, object, embed, video {
     text-align: center;
     width: 25%;
 }
+.div-next {
+	text-indent: -99999px !important;
+} 
+
+/* ------------------------------------------------
+ Game 1.-B  */
+input, textarea{
+width: 180px;
+margin-bottom: 5px;
+}

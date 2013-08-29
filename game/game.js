@@ -122,8 +122,8 @@ function createCard(id,valor,color,hold){
         newCard.id="card"+hold+id;
     newCard.className="card"+hold;
     newCard.style.backgroundColor=color;
-    var _0x7cf8x18=document.createTextNode(valor);
-    newCard.appendChild(_0x7cf8x18);
+    var textValue=document.createTextNode(valor);
+    newCard.appendChild(textValue);
     newCard.value=valor;
     var cards=document.getElementById("cards"+hold);
     cards.appendChild(newCard);
