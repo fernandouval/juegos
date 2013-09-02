@@ -121,7 +121,7 @@ img, object, embed, video {
     width: 25%;
 }
 .div-next {
-	text-indent: -99999px !important;
+	/*text-indent: -99999px !important;*/
 } 
 
 /* ------------------------------------------------
